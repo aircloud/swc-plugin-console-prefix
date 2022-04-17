@@ -6,23 +6,18 @@ edition = "2021"
 [lib]
 crate-type = ["cdylib"]
 
-[profile.release]
-codegen-units = 1
-lto = true
-opt-level = "s"
-
 [dependencies]
 anyhow = "1.0.54"
 serde = "1.0.136"
 serde_json = "1.0.79"
-swc_plugin = "0.27.1"
+swc_plugin = "0.47.0"
 
 [dev-dependencies]
-js-sys = "0.3.56"
-swc = { version = "0.129.1", features = ["plugin"] }
-swc_common = { version = "0.17.8", features = ["tty-emitter"] }
-swc_ecma_parser = "0.88.3"
-swc_ecma_transforms_testing = "0.60.0"
+js-sys = "0.3.57"
+swc = { version = "0.168.0", features = ["plugin"] }
+swc_common = { version = "0.17.21", features = ["tty-emitter"] }
+swc_ecma_parser = "0.102.2"
+swc_ecma_transforms_testing = "0.80.0"
 
 [[example]]
 name = "usage"

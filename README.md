@@ -31,7 +31,7 @@ console.log('hello', 'world')
 ## Run example
 
 ```sh
-cargo run --package swc-plugin-console-source --example usage
+cargo run --package swc-plugin-console-prefix --example usage
 ```
 
 ## Test

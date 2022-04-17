@@ -1,6 +1,6 @@
 use anyhow::Context;
 use serde::{Deserialize, Serialize};
-use swc_plugin::{ast::*, plugin_transform, syntax_pos::DUMMY_SP};
+use swc_plugin::{ast::*, plugin_transform, syntax_pos::DUMMY_SP, TransformPluginProgramMetadata};
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -69,9 +69,8 @@ impl TransformVisitor {
                     spread: None,
                     expr: Box::new(Expr::Lit(Lit::Str(Str {
                         span: DUMMY_SP,
-                        has_escape: false,
-                        kind: StrKind::Synthesized,
                         value: prefix,
+                        raw: None,
                     }))),
                 },
             );
@@ -117,12 +116,12 @@ impl VisitMut for TransformVisitor {
 /// However, this means plugin author need to handle all of serialization/deserialization
 /// steps with communicating with host. Refer `swc_plugin_macro` for more details.
 #[plugin_transform]
-pub fn process_transform(program: Program, plugin_config: String, context: String) -> Program {
-    let mut config: Config = serde_json::from_str(&plugin_config)
+pub fn process_transform(program: Program, metadata: TransformPluginProgramMetadata) -> Program {
+    let mut config: Config = serde_json::from_str(&metadata.plugin_config)
         .context("failed to parse plugin config")
         .unwrap();
 
-    let context: PluginContext = serde_json::from_str(&context)
+    let context: PluginContext = serde_json::from_str(&metadata.transform_context)
         .context("failed to parse plugin context")
         .unwrap();
 
